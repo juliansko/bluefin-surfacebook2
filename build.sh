@@ -2,18 +2,20 @@
 
 set -ouex pipefail
 
-### Install packages
+sudo wget -O /etc/yum.repos.d/linux-surface.repo https://pkg.surfacelinux.com/fedora/linux-surface.repo
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/39/x86_64/repoview/index.html&protocol=https&redirect=1
+rpm-ostree override replace ./*.rpm \
+	--remove kernel-core \
+	--remove kernel-modules \
+	--remove kernel-modules-extra \
+        --remove libwacom \
+        --remove libwacom-data \
+	--install kernel-surface \
+	--install iptsd \
+        --install libwacom-surface \
+        --install libwacom-surface-data
 
-# this installs a package from fedora repos
-dnf install -y tmux 
-
-# this would install a package from rpmfusion
-# rpm-ostree install vlc
+rpm-ostree install surface-secureboot
 
 #### Example for enabling a System Unit File
 
